@@ -3,7 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const mailRouter = require("./routes/mailRouter");
 const mailController = require("./controllers/mailController");
+const schedule = require("node-schedule");
+const nodemailer = require("nodemailer");
+const cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -19,18 +23,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-
-// ///////////////// Email Routes
-app.post("/schedule-email", mailController.scheduleEmail);
-
-app.get("/scheduled-emails", mailController.getScheduledEmails);
-
-app.get("/scheduled-emails/:id", mailController.getScheduledEmailDetails);
-
-app.delete("/scheduled-emails/:id", mailController.cancelScheduledEmail);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

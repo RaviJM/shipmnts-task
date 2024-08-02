@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 function ScheduleEmail() {
   const [from, setFrom] = useState("");
@@ -42,6 +43,18 @@ function ScheduleEmail() {
     e.preventDefault();
 
     console.log("asdf");
+
+    try {
+      const form = { from, recepient, subject, body, date, time };
+      console.log("asdf");
+
+      const res = await axios.get("http://localhost:3000/scheduled-emails");
+
+      console.log("asdf");
+      console.log(res.status);
+    } catch (err) {
+      console.log(`Error: ${err.message}`);
+    }
   }
 
   return (
